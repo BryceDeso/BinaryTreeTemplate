@@ -4,7 +4,7 @@ class TreeNode
 public:
 	TreeNode() {};
 	TreeNode(int value);
-	~TreeNode() {};
+	~TreeNode();
 
 	bool hasLeft() { return m_left != nullptr; }
 	bool hasRight() { return m_right != nullptr; }
