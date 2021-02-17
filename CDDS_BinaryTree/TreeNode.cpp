@@ -30,5 +30,4 @@ void TreeNode::draw(int x, int y, bool selected)
 
 	//Draws the text in the center of the node.
 	DrawText(buffer, x - 12, y - 12, 12, WHITE);
-	
 }
