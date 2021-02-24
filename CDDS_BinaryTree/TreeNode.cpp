@@ -16,7 +16,7 @@ void TreeNode::draw(int x, int y, bool selected)
 	sprintf(buffer, "%d", m_value);
 
 	//Draws the outer circle.
-	DrawCircle(x, y, 30, YELLOW);
+	DrawCircle(x, y, 30, RED);
 
 	//If selected, makes the selected node green, otherwise it will amke it black.
 	if (selected)

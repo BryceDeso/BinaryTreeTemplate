@@ -19,7 +19,7 @@ void BinaryTree::insert(int value)
 	//of the current node and set it to the root.
 	TreeNode* currentIter = m_root;
 	TreeNode* parentIter = m_root;
-	TreeNode* insertNode = new TreeNode(value);
+	TreeNode* tempNode = new TreeNode(value);
 
 	//Loop until the the current node iterator reaches a nullptr.
 	while (currentIter != nullptr)
@@ -30,7 +30,12 @@ void BinaryTree::insert(int value)
 			//Set the parent node to be the current node before the current node moves positions.
 			//Change the current node to be the child to its left and continue.
 			parentIter = currentIter;
-			currentIter->setLeft(insertNode);
+			//If currentIter doesn't have a Left, set currentIter's left to tempNode.
+			if (!currentIter->hasLeft())
+			{
+				currentIter->setLeft(tempNode);
+			}
+			currentIter = currentIter->getLeft();
 		}
 		//Check if the value we want to add to the tree is greater than the value at the current node.
 		else if (value > currentIter->getData())
@@ -38,7 +43,12 @@ void BinaryTree::insert(int value)
 			//Set the parent node to be the current node before the current node moves positions.
 			//Change the current node to be the child to its right and continue.
 			parentIter = currentIter;
-			currentIter->setRight(insertNode);
+			//If currentIter doesn't have a right, set currentIter's right to tempNode.
+			if (!currentIter->hasRight())
+			{
+				currentIter->setRight(tempNode);
+			}
+			currentIter = currentIter->getRight();
 		}
 
 		//If the value is the same as a value already in the list return 
@@ -67,8 +77,8 @@ void BinaryTree::remove(int value)
 {	
 	//Create two TreeNode pointers: one to hold a reference to the node we want to remove
 	//and another to hold a reference to its parent.
-	TreeNode* currentNode;
-	TreeNode* parentNode;
+	TreeNode* currentNode = m_root;
+	TreeNode* parentNode = m_root;
 
 	//Try to find the node that matches the value given and its parent in the tree.
 	//If the node cannot be found return.
@@ -78,11 +88,11 @@ void BinaryTree::remove(int value)
 	if (currentNode->hasRight())
 	{
 		//Initialize two iterators to find the node whose data will be copied and its parent.
-		currentNode = m_root;
-		parentNode = m_root;
+		TreeNode* currentNodeIter = currentNode;
+		TreeNode* parentNodeIter = parentNode;
 
 		//Set the first iterator to point to the right child of the node we want to remove.
-		currentNode = currentNode->getRight();
+		currentNodeIter = currentNodeIter->getRight();
 
 		//Loop while the first iterator has a value to its left
 		while (currentNode->hasLeft())
@@ -128,7 +138,7 @@ void BinaryTree::remove(int value)
 		if (parentNode->hasLeft())
 		{
 			//Check if the data that the left child holds is the same as the data the node to remove holds.
-			if (parentNode->getRight()->getData() == currentNode->getData())
+			if (parentNode->getLeft()->getData() == currentNode->getData())
 			{
 				//Set the left child of the parent node to be the left child of the node to remove.
 				currentNode->setLeft(parentNode->getLeft());
@@ -139,7 +149,7 @@ void BinaryTree::remove(int value)
 		if (parentNode->hasRight())
 		{
 			//Check if the data the right child holds is the same as the data the node to remove holds.
-			if (parentNode->getLeft()->getData() == currentNode->getData())
+			if (parentNode->getRight()->getData() == currentNode->getData())
 			{
 				//Set the right child of the parent node to be the left child of the node to remove.
 				currentNode->setRight(parentNode->getLeft());
@@ -176,13 +186,13 @@ TreeNode* BinaryTree::find(int value)
 		else if (currentIter->getData() < value)
 		{
 			//Set the iterator to be its current right child.
-			currentIter->setRight(currentIter);
+			currentIter = currentIter->getRight();
 		}
 		//If the node doesn't have the data we want, check to see if it's lower in value.
 		else if (currentIter->getData() > value)
 		{
 			//Set the iterator to be its current left child.
-			currentIter->setLeft(currentIter);
+			currentIter = currentIter->getLeft();
 		}
 		//end loop
 	}
@@ -199,9 +209,9 @@ bool BinaryTree::findNode(int searchValue, TreeNode*& nodeFound, TreeNode*& node
 {
 	//Create two iterators: one that will point to the current node to compare the search value to,
 	//and the other to hold a reference to the parent.
-	TreeNode* currentNodeIter = m_root;
-	TreeNode* parentNodeIter = m_root;
-	TreeNode* insertNode = new TreeNode(searchValue);
+	TreeNode* currentNodeIter = nodeFound;
+	TreeNode* parentNodeIter = nodeParent;
+	TreeNode* tempNode = new TreeNode(searchValue);
 	
 	//Loop while the current node iterator isn't nullptr/
 	while (currentNodeIter != nullptr)
@@ -221,7 +231,7 @@ bool BinaryTree::findNode(int searchValue, TreeNode*& nodeFound, TreeNode*& node
 			//Set the parent node to be the current node.
 			//Set the current node to be the child to the right of the current node.
 			nodeParent = currentNodeIter;
-			nodeParent->setRight(insertNode);
+			currentNodeIter = currentNodeIter->getRight();
 		}
 		//Check if the search value is less than the value at the current node.
 		else if (searchValue < currentNodeIter->getData())
@@ -229,7 +239,7 @@ bool BinaryTree::findNode(int searchValue, TreeNode*& nodeFound, TreeNode*& node
 			//Set the parent node to be the current node.
 			//Set the current node to be its left child.
 			nodeParent = currentNodeIter;
-			nodeParent->setLeft(insertNode);
+			currentNodeIter = currentNodeIter->getLeft();
 		}
 		//end loop
 	}
