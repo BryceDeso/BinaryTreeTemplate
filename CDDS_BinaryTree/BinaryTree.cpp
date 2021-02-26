@@ -95,7 +95,7 @@ void BinaryTree::remove(int value)
 		firstIter = firstIter->getRight();
 
 		//Loop while the first iterator has a value to its left
-		while (currentNode->hasLeft())
+		while (firstIter->hasLeft())
 		{
 			//Set the second iterator to be the value of the first iterator.
 			//Set the first iterator to be the value to the left of it
